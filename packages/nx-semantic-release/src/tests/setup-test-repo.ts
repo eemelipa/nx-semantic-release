@@ -105,12 +105,12 @@ function createPackageJsonForProjects() {
 async function bootstrapTestProjectsAndLibs() {
   testApps.forEach((project) => {
     runNxCommand(
-      `generate @nx/web:application ${project} --directory apps/${project} --e2e-test-runner=none`
+      `generate @nx/web:application ${project} --directory apps --e2e-test-runner=none`
     );
   });
 
   testLibs.forEach((lib) => {
-    runNxCommand(`generate @nx/js:library ${lib} --directory libs/${lib}`);
+    runNxCommand(`generate @nx/js:library ${lib} --directory libs`);
   });
 
   createPackageJsonForProjects();
@@ -287,8 +287,6 @@ export async function setupTestRepo(
   }
 
   await bootstrapTestProjectsAndLibs();
-
-  await runCommandsInTestProj(['npm install -D ajv']);
 
   if (withGit) {
     await runCommandsInTestProj([
